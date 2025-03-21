@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sushi/components/food_tile.dart';
 import 'package:sushi/models/food.dart';
+import 'package:sushi/pages/food_details_page.dart';
 import 'package:sushi/theme/colors.dart';
 import 'package:sushi/components/MyButton.dart';
 
@@ -17,29 +18,38 @@ class _MenuPageState extends State<MenuPage> {
   List<Food> foodMenu = [
     Food(
       name: 'Salmon Sushi',
-      price: '20,000원',
+      price: '20,000',
       imagePath: 'lib/images/salmon_sushi.png',
       rating: '4.8',
     ),
     Food(
       name: 'Tuna Sushi',
-      price: '15,000원',
+      price: '15,000',
       imagePath: 'lib/images/tuna_sushi.png',
       rating: '4.8',
     ),
     Food(
       name: 'Salmon Egg Sushi',
-      price: '10,000원',
+      price: '10,000',
       imagePath: 'lib/images/salmon_egg.png',
       rating: '4.8',
     ),
     Food(
       name: 'Sushi Set',
-      price: '10,000원',
+      price: '10,000',
       imagePath: 'lib/images/sushi.png',
       rating: '4.8',
     ),
   ];
+
+  void navigateToDetail(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodDetailsPage(food: foodMenu[index]),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +143,11 @@ class _MenuPageState extends State<MenuPage> {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: foodMenu.length,
-              itemBuilder: (context, index) => FoodTile(food: foodMenu[index]),
+              itemBuilder:
+                  (context, index) => FoodTile(
+                    food: foodMenu[index],
+                    onTap: () => navigateToDetail(index),
+                  ),
             ),
           ),
 
