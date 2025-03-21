@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sushi/components/MyButton.dart';
 import 'package:sushi/models/food.dart';
+import 'package:sushi/models/shop.dart';
 import 'package:sushi/theme/colors.dart';
 
 class FoodDetailsPage extends StatefulWidget {
@@ -24,12 +26,42 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
   void decrementQuantity() {
     setState(() {
-      quantityCount--;
+      if (quantityCount > 0) {
+        quantityCount--;
+      }
     });
   }
 
   void addToCart() {
-    print(quantityCount);
+    if (quantityCount > 0) {
+      final shop = context.read<Shop>();
+      shop.addToCart(widget.food, quantityCount);
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder:
+            (context) => AlertDialog(
+              backgroundColor: primaryColor,
+              content: Text(
+                "장바구니에 추가되었습니다.",
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.done, color: Colors.white),
+                ),
+              ],
+            ),
+      );
+      print(quantityCount);
+    }
   }
 
   @override

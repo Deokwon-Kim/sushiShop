@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sushi/components/food_tile.dart';
 import 'package:sushi/models/food.dart';
+import 'package:sushi/models/shop.dart';
 import 'package:sushi/pages/food_details_page.dart';
 import 'package:sushi/theme/colors.dart';
 import 'package:sushi/components/MyButton.dart';
@@ -14,6 +16,17 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  void navigateToFoodDetails(int index) {
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodDetailsPage(food: foodMenu[index]),
+      ),
+    );
+  }
+
   // 메뉴 목록
   List<Food> foodMenu = [
     Food(
@@ -57,6 +70,14 @@ class _MenuPageState extends State<MenuPage> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('Tokyo'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cartpage');
+            },
+            icon: Icon(Icons.shopping_cart, color: Colors.black),
+          ),
+        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
